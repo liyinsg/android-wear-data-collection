@@ -9,7 +9,7 @@ import android.util.Log;
 
 public class DataCollectionAlarmReceiver extends WakefulBroadcastReceiver {
     private static final String TAG = "DataCollectionAlarmReceiver";
-    private static final long INTERVAL = AlarmManager.INTERVAL_FIFTEEN_MINUTES;
+    private static final long INTERVAL = 1*60*1000;
 
     private AlarmManager alarmManager;
     private PendingIntent alarmIntent;
