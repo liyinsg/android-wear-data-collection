@@ -2,19 +2,18 @@ apply plugin: 'com.android.application'
 
 
 android {
-    compileSdkVersion 20
-    buildToolsVersion "20.0.0"
+    compileSdkVersion 21
+    buildToolsVersion "23.0.2"
 
     defaultConfig {
         applicationId "edu.utexas.cs.jacobr.wearabledatacollector"
-        minSdkVersion 20
-        targetSdkVersion 20
+        minSdkVersion 21
+        targetSdkVersion 21
         versionCode 1
         versionName "1.0"
     }
     buildTypes {
         release {
-            runProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
