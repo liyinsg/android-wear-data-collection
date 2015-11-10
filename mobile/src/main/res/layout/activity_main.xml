@@ -34,4 +34,20 @@
         android:onClick="onReadSensors"
         />
 
+    <TextView
+        android:layout_below="@+id/collectionbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:id="@+id/lastUpdate"
+        />
+
+    <TextView
+        android:layout_below="@+id/lastUpdate"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text=""
+        android:id="@+id/textView"
+        />
+
 </RelativeLayout>

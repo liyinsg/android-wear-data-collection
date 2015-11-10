@@ -1,11 +1,14 @@
 package edu.utexas.cs.jacobr.wearabledatacollector;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -27,7 +30,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-public class DataStorageListenerService extends WearableListenerService{
+public class DataStorageListenerService extends WearableListenerService {
     private static final String TAG = "DataStorageListenerService";
     private static final String SENSOR_DATA_PATH = "/sensor-data";
     private static final String SHARED_PREFS_KEY = "data-collection-prefs";
@@ -35,6 +38,7 @@ public class DataStorageListenerService extends WearableListenerService{
 
     private GoogleApiClient mGoogleApiClient;
     private SharedPreferences preferences;
+    private LocalBroadcastManager broadcaster;
 
     @Override
     public void onCreate() {
@@ -44,7 +48,7 @@ public class DataStorageListenerService extends WearableListenerService{
                 .addApi(Wearable.API)
                 .build();
         mGoogleApiClient.connect();
-
+        broadcaster = LocalBroadcastManager.getInstance(this);
     }
 
     @Override
@@ -100,6 +104,10 @@ public class DataStorageListenerService extends WearableListenerService{
     }
 
     private void saveData(DataMap data) {
+        String dataJSON = dataMapAsJSONObject(data).toString() + "\n";
+        Intent intent = new Intent(MainActivity.RESULT);
+        intent.putExtra(MainActivity.MESSAGE, dataJSON);
+        broadcaster.sendBroadcast(intent);
         if (!isExternalStorageWritable()) {
             Log.d(TAG, "External Storage Not Writable");
             return;
@@ -107,7 +115,6 @@ public class DataStorageListenerService extends WearableListenerService{
         File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
         directory.mkdirs();
         File file = new File(directory, "wearable_data.txt");
-        String dataJSON = dataMapAsJSONObject(data).toString() + "\n";
         try {
             FileOutputStream stream = new FileOutputStream(file, true);
             OutputStreamWriter writer = new OutputStreamWriter(stream);
